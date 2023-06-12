@@ -23,12 +23,12 @@ public class EmployeeController {
         iEmployeeServices.addEmployee(employeeList);
     }
 
-    @PutMapping(value = "/updateEmployeeDepartment/{employyeID}/{department}")
+    @PutMapping(value = "/updateEmployeeDepartment/{employyeID}")
     public void updateEmployeeDepartment(@PathVariable("employeeID") int employeeID,@PathVariable("department") String department){
-        iEmployeeServices.updateEmployeeDepartment(employeeID,department);
+        iEmployeeServices.updateEmployeeDepartment(employeeID);
     }
 
-    @DeleteMapping(value = "/deleteEmployeeByID/{id}")
+    @DeleteMapping(value = "/deleteEmployeeByID/{employeeID}")
     public void deleteEmployeeByEmployeeId(@PathVariable("employeeID") int employeeID){
         iEmployeeServices.deleteEmployeeByEmployeeID(employeeID);
     }

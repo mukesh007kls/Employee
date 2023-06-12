@@ -9,7 +9,7 @@ public interface IEmployeeServices {
 
     List<Employee> getAllEmployeeList();
     void addEmployee(List<Employee> employeeList);
-    void updateEmployeeDepartment(int id,String department);
+    void updateEmployeeDepartment(int id);
     Optional<Employee> getEmployeeByID(int employeeID);
     void deleteEmployeeByEmployeeID(int id);
 }

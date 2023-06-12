@@ -26,11 +26,10 @@ public class EmployeeService implements IEmployeeServices {
     }
 
     @Override
-    public void updateEmployeeDepartment(int id, String department) {
+    public void updateEmployeeDepartment(int id) {
         Optional<Employee> optionalEmployee=iEmployeeRepository.findById(id);
         if (optionalEmployee.isPresent()){
             Employee employee=optionalEmployee.get();
-            employee.setDepartment(department);
             iEmployeeRepository.save(employee);
         }
     }
