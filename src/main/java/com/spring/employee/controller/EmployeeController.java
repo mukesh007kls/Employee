@@ -2,6 +2,7 @@ package com.spring.employee.controller;
 
 import com.spring.employee.model.Employee;
 import com.spring.employee.service.IEmployeeServices;
+import org.hibernate.type.descriptor.jdbc.ObjectNullResolvingJdbcType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import com.spring.employee.controller.CRUDOpp;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,31 @@ public class EmployeeController {
         }
     }
 
+    @PostMapping("/createEmployees")
+    public ResponseEntity<String> addListOfEmployees(@RequestBody List<Map<String,Object>> list){
+        try{
+            var ref = new Object() {
+                int id;
+                String name;
+                String gender;
+                String department;
+                long salary;
+            };
+
+            for (Map<String, Object> p : list) {
+                ref.id = (int) p.get("employeeID");
+                ref.name = (String) p.get("name");
+                ref.gender = (String) p.get("gender");
+                ref.department = (String) p.get("department");
+                ref.salary = (int) p.get("salary");
+                crudOpp.insertData(ref.id, ref.name, ref.gender, ref.department, ref.salary);
+            }
+            return ResponseEntity.ok("all Employees added");
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @DeleteMapping("/deleteEmp/{employeeID}")
     public ResponseEntity<String> deleteEmployee(@PathVariable("employeeID") int employeeID){
         try {
@@ -84,6 +111,25 @@ public class EmployeeController {
             }else {
                 return ResponseEntity.notFound().build();
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/getAllEmployees")
+    public ResponseEntity<List<Map<String,Object>>> getAllEmployees(){
+        try {
+            List<Map<String,Object>> employeeList=new ArrayList<>();
+            ResultSet resultSet=crudOpp.getAllEmployeesData();
+            while (resultSet.next()){
+                Map<String, Object> employee=new HashMap<>();
+                employee.put("employeeID",resultSet.getInt("employeeid"));
+                employee.put("name",resultSet.getString("name"));
+                employee.put("gender",resultSet.getString("gender"));
+                employee.put("department",resultSet.getString("department"));
+                employee.put("salary",resultSet.getLong("salary"));
+                employeeList.add(employee);
+            }
+            return ResponseEntity.ok(employeeList);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
