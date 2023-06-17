@@ -1,8 +1,11 @@
 package com.spring.employee.controller;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.sql.*;
 
+@Component("crudOpp")
 public class CRUDOpp {
     private Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/empData";

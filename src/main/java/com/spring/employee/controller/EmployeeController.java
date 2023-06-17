@@ -41,7 +41,8 @@ public class EmployeeController {
 //    public void deleteEmployeeByEmployeeId(@PathVariable("employeeID") int employeeID){
 //        iEmployeeServices.deleteEmployeeByEmployeeID(employeeID);
 //    }
-    CRUDOpp crudOpp=new CRUDOpp();
+    @Autowired
+    CRUDOpp crudOpp;
     @PostMapping("/createEmp")
     public ResponseEntity<String> createEmployee(@RequestBody Map<String,Object> record) {
         try {
