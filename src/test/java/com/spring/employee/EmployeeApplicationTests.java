@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,4 +53,13 @@ class EmployeeApplicationTests {
         assertEquals("Salary",employeeExpectedData.getSalary(),employeeActualData.getSalary());
     }
 
+    @Test
+    void testToUpdateEmployeeData(){
+        Map<String,Object> employeeData=new HashMap<>();
+        employeeData.put("name","Manoj");
+        employeeData.put("department","Manager");
+
+        String response=employeeController.updateEmployee(3,employeeData).getBody();
+        assertEquals("Update","Data updated",response);
+    }
 }
