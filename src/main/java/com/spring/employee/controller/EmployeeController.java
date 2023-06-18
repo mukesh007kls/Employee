@@ -152,4 +152,21 @@ public class EmployeeController {
             throw new RuntimeException(e);
         }
     }
+
+    @PostMapping("/createOnlyEmployeeID")
+    public ResponseEntity<String> addOnlyListOfEmployeeId(@RequestBody List<Map<String,Object>> list){
+        try{
+            var ref = new Object() {
+                int id;
+            };
+
+            for (Map<String, Object> p : list) {
+                ref.id = (int) p.get("employeeID");
+                crudOpp.insertOnlyEmployeeID(ref.id);
+            }
+            return ResponseEntity.ok("all Employees added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

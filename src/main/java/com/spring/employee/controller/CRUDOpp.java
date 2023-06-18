@@ -70,4 +70,13 @@ public class CRUDOpp {
         PreparedStatement statement = connection.prepareStatement(query);
         return statement.executeUpdate();
     }
+
+    public void insertOnlyEmployeeID(int employeeID) throws SQLException {
+        String query= String.valueOf(new StringBuilder().append("insert into employee_data(employeeID)").append("value(?)"));
+        Connection connection = this.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setInt(1, employeeID);
+        statement.executeUpdate();
+    }
 }

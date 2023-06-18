@@ -1,6 +1,7 @@
 package com.spring.employee;
 
 
+import com.fasterxml.jackson.databind.type.LogicalType;
 import com.spring.employee.controller.CRUDOpp;
 import com.spring.employee.controller.EmployeeController;
 import com.spring.employee.model.Employee;
@@ -11,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
@@ -61,5 +64,31 @@ class EmployeeApplicationTests {
 
         String response=employeeController.updateEmployee(3,employeeData).getBody();
         assertEquals("Update","Data updated",response);
+    }
+
+    @Test
+    void testToInsertMultipleEmployees(){
+        long startTime1 = 0;
+        long endTime1;
+        List<Map<String,Object>> employeeList=new ArrayList<>();
+        for (int i=8;i<=10007;i++){
+            startTime1=System.currentTimeMillis();
+            Map<String,Object> employeeData=new HashMap<>();
+            Employee employee=new Employee();
+            employee.setEmployeeID(i);
+            employeeData.put("employeeID",employee.getEmployeeID());
+            employeeList.add(employeeData);
+        }
+        long startTime2=System.currentTimeMillis();
+        employeeController.addOnlyListOfEmployeeId(employeeList);
+        endTime1=System.currentTimeMillis();
+        long timeTaken=endTime1-startTime1;
+        System.out.println("Time taken before getting data into list:-"+timeTaken);
+        long timeTaken2=startTime2-endTime1;
+        System.out.println("Time taken to insert data into db:-"+timeTaken2);
+        List<Map<String,Object>> actualEmployeeList=employeeController.getAllEmployees().getBody();
+        int actualCount=actualEmployeeList.size();
+        int expectedCount=10007;
+        assertEquals("Number of records entered",expectedCount,actualCount);
     }
 }
