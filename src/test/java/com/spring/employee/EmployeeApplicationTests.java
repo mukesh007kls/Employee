@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.type.LogicalType;
 import com.spring.employee.controller.CRUDOpp;
 import com.spring.employee.controller.EmployeeController;
 import com.spring.employee.model.Employee;
+import com.spring.employee.service.IEmployeeServices;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,9 +72,10 @@ class EmployeeApplicationTests {
         long startTime1 = 0;
         long endTime1;
         List<Map<String,Object>> employeeList=new ArrayList<>();
-        for (int i=8;i<=10007;i++){
+        for (int i=1;i<=10004;i++){
             startTime1=System.currentTimeMillis();
             Map<String,Object> employeeData=new HashMap<>();
+
             Employee employee=new Employee();
             employee.setEmployeeID(i);
             employeeData.put("employeeID",employee.getEmployeeID());
@@ -88,7 +90,33 @@ class EmployeeApplicationTests {
         System.out.println("Time taken to insert data into db:-"+timeTaken2);
         List<Map<String,Object>> actualEmployeeList=employeeController.getAllEmployees().getBody();
         int actualCount=actualEmployeeList.size();
-        int expectedCount=10007;
+        int expectedCount=10004;
         assertEquals("Number of records entered",expectedCount,actualCount);
+    }
+    @Autowired
+    IEmployeeServices iEmployeeServices;
+    @Test
+    void testToSendMultipleRecords(){
+        try {
+            long startTime = 0;
+            long endTime1;
+            List<Employee> employeeList = new ArrayList<>();
+            for (int i = 1; i <= 10004; i++) {
+                Employee employee = new Employee();
+                employee.setEmployeeID(i);
+                employee.setName("abc"+i);
+                employee.setGender("male"+i);
+                employee.setDepartment("hr"+i);
+                employee.setSalary(i);
+                employeeList.add(employee);
+            }
+            startTime = System.currentTimeMillis();
+            iEmployeeServices.addEmployee(employeeList);
+            endTime1=System.currentTimeMillis();
+            long timeTaken=endTime1-startTime;
+            System.out.println("time taken:"+timeTaken);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 }

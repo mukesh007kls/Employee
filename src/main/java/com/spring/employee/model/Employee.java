@@ -8,20 +8,21 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-@Table(name = "EmployeeData")
+@Table(name = "employee_data")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "employeeid")
     private int employeeID;
 
-    @Column
+    @Column(name = "name")
     private String name;
-    @Column
+    @Column(name = "gender")
     private String gender;
-    @Column
+    @Column(name = "department")
     private String department;
-    @Column
+    @Column(name = "salary")
     private long salary;
 
     public Employee() {
