@@ -1,9 +1,11 @@
 package com.spring.employee.controller;
 
+import com.spring.employee.model.Employee;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 @Component("crudOpp")
 public class CRUDOpp {
@@ -78,5 +80,19 @@ public class CRUDOpp {
 
         statement.setInt(1, employeeID);
         statement.executeUpdate();
+    }
+    public void insertMultipleData(List<Employee> employeeList) throws SQLException, IOException {
+        String query = new StringBuilder().append("insert into employee_data(employeeID,name,gender,department,salary) \n").append("values(?,?,?,?,?)").toString();
+        Connection connection = this.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        for (Employee e:employeeList) {
+            statement.setInt(1, e.getEmployeeID());
+            statement.setString(2,e.getName());
+            statement.setString(3, e.getGender());
+            statement.setString(4, e.getDepartment());
+            statement.setLong(5, e.getSalary());
+            statement.addBatch();
+        }
+        statement.executeBatch();
     }
 }

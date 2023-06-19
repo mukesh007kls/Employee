@@ -119,4 +119,29 @@ class EmployeeApplicationTests {
             e.printStackTrace();
         }
     }
+    @Test
+    void testToSendMultipleRecordsUsingBatch(){
+        try {
+            long startTime = 0;
+            long endTime1;
+            List<Employee> employeeList = new ArrayList<>();
+            for (int i = 1; i <= 10004; i++) {
+                Employee employee = new Employee();
+                employee.setEmployeeID(i);
+                employee.setName("abc"+i);
+                employee.setGender("male"+i);
+                employee.setDepartment("hr"+i);
+                employee.setSalary(i);
+                employeeList.add(employee);
+            }
+            startTime = System.currentTimeMillis();
+            employeeController.addListOfEmployeesUsingBatch(employeeList);
+            endTime1=System.currentTimeMillis();
+            long timeTaken=endTime1-startTime;
+            System.out.println("time taken:"+timeTaken);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
 }

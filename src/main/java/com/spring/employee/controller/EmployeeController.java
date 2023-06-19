@@ -169,4 +169,14 @@ public class EmployeeController {
             throw new RuntimeException(e);
         }
     }
+
+
+    @PostMapping("/addEmployeeUsingBatch")
+    public void addListOfEmployeesUsingBatch(List<Employee> employeeList) {
+        try {
+            crudOpp.insertMultipleData(employeeList);
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
